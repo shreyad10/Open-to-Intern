@@ -6,7 +6,8 @@ const createIntern = async function (req, res) {
     try {
         let data = req.body
         let saved = await internModel.create(data)
-        res.status(201).send({ status: true, message: "intern created", data: saved })
+        let result = await internModel.find(saved).select({ __v: 0 })
+        res.status(201).send({ status: true, message: "intern created", data: result })
     }
     catch (error) {
         return res.status(500).send({ error: error.message })
