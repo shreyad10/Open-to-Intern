@@ -33,8 +33,14 @@ const internValidator = async function (req, res, next) {
     let result = await internModel.findOne({ email: email })
     if (result) return res.status(400).send({ status: false, message: "This email is already registered" })
 
-    if (!mobile || !isValidNumber(mobile.trim())) return res.status(400).send({ status: false, message: "Enter mobile in valid format" })
+    if (!mobile || !isValidNumber(mobile.trim())) return res.status(400).send({ status: false, message: "Enter mobile in valid format, a valid mobile number starts with 6,7,8 or 9" })
+    let isUniqueMob = await internModel.findOne({mobile:mobile}) 
+    if(isUniqueMob) return res.status(400).send({ status: false, message: "This Mobile Nubmer is already registered" })
+
     if (!collegeId || !isValidId(collegeId.trim())) return res.status(400).send({ status: false, message: "Enter collegeId in valid format" })
+
+    let isValidCollege = await collegeModel.findOne({ _id :collegeId});
+    if(!isValidCollege) return res.status(400).send({ status: false, message: "Provided College does not exists" })
     next()
 }
 
