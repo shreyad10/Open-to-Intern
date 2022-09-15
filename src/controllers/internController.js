@@ -5,6 +5,8 @@ const collegeModel = require("../models/collegeModel.js")
 const createIntern = async function (req, res) {
     try {
         let data = req.body
+        let name = await collegeModel.findOne({name :data.collegeName}).select({_id : 1})
+        data['collegeId'] = name._id
         let saved = await internModel.create(data)
         let result = await internModel.find(saved).select({ __v: 0 })
         res.status(201).send({ status: true, message: "intern created", data: result })

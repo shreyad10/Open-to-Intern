@@ -26,7 +26,7 @@ const internValidator = async function (req, res, next) {
     let data = req.body
     if (!isValidBody(data)) return res.status(400).send({ status: false, message: "Request body can't be empty" })
 
-    let { name, email, mobile, collegeId } = data
+    let { name, email, mobile, collegeName } = data
     if (!name || !isValidName(name.trim())) return res.status(400).send({ status: false, message: "Enter name in valid format" })
 
     if (!email || !isValidEmail(email.trim())) return res.status(400).send({ status: false, message: "Enter email in valid format" })
@@ -37,9 +37,9 @@ const internValidator = async function (req, res, next) {
     let isUniqueMob = await internModel.findOne({mobile:mobile}) 
     if(isUniqueMob) return res.status(400).send({ status: false, message: "This Mobile Nubmer is already registered" })
 
-    if (!collegeId || !isValidId(collegeId.trim())) return res.status(400).send({ status: false, message: "Enter collegeId in valid format" })
+    if (!collegeName || !isValidName(collegeName.trim())) return res.status(400).send({ status: false, message: "Enter collegeId in valid format" })
 
-    let isValidCollege = await collegeModel.findOne({ _id :collegeId});
+    let isValidCollege = await collegeModel.findOne({ name :collegeName});
     if(!isValidCollege) return res.status(400).send({ status: false, message: "Provided College does not exists" })
     next()
 }
