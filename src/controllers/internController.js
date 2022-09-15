@@ -25,13 +25,13 @@ const getCollege = async function (req, res) {
         if (!college) return res.status(400).send({ status: false, message: "This college doesn't exist" })
 
         let interns = await internModel.find({ collegeId: college._id }).select({ "name": 1, "email": 1, "mobile": 1 })
-        if (!interns) return res.status(404).send({ status: false, message: "No interns available for this College" })
+        if (interns.length == 0) return res.status(404).send({ status: false, message: "No interns available for this College" })
 
         let internDetails = {
             name: college.name, fullName: college.fullName,
             logoLink: college.logoLink, interns: interns
         }
-        return res.status(201).send({ status: true, message: "list of interns", data: internDetails })
+        return res.status(200).send({ status: true, message: "list of interns", data: internDetails })
     }
     catch (error) {
         return res.status(500).send({ error: error.message })
