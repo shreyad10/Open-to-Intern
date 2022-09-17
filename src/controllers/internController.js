@@ -5,11 +5,10 @@ const collegeModel = require("../models/collegeModel.js")
 const createIntern = async function (req, res) {
     try {
         let data = req.body
-        let name = await collegeModel.findOne({name :data.collegeName}).select({_id : 1})
+        let name = await collegeModel.findOne({ name: data.collegeName }).select({ _id: 1 })
         data['collegeId'] = name._id
         let saved = await internModel.create(data)
-        let result = await internModel.find(saved).select({ __v: 0 })
-        res.status(201).send({ status: true, message: "intern created", data: result })
+        res.status(201).send({ status: true, message: "intern created", data: saved })
     }
     catch (error) {
         return res.status(500).send({ error: error.message })
@@ -19,10 +18,12 @@ const createIntern = async function (req, res) {
 const getCollege = async function (req, res) {
     try {
         let name = req.query.collegeName
-        if (name.length == 0) return res.status(400).send({ status: false, message: "Please provide a college name" })
 
         if (!name) return res.status(400).send({ status: false, message: "Must enter college name" })
-
+        if (name.length == 0) {
+            return res.status(400).send({ status: false, message: "Please provide a college name" })
+        }
+        
         let college = await collegeModel.findOne({ name: name })
         if (!college) return res.status(400).send({ status: false, message: "This college doesn't exist" })
 

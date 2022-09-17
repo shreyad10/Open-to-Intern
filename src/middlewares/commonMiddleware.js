@@ -1,7 +1,7 @@
 // ------------- VALIDATORS ----------------
 const collegeModel = require('../models/collegeModel')
 const internModel = require('../models/internModel')
-const { isValidBody, isValidEmail, isValidId, isValidName, isValidNumber, isValidUrl } = require('../validators/validators')
+const { isValidBody, isValidEmail, isValidName, isValidNumber, isValidUrl } = require('../validators/validators')
 
 
 const collegeValidator = async function (req, res, next) {
